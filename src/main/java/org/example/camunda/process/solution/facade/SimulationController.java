@@ -1,13 +1,9 @@
 package org.example.camunda.process.solution.facade;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.example.camunda.process.solution.facade.dto.FormJsListValue;
-import org.example.camunda.process.solution.model.User;
-import org.example.camunda.process.solution.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,18 +16,15 @@ import io.camunda.tasklist.exception.TaskListException;
 @CrossOrigin(origins = "*")
 public class SimulationController {
 
-    @Autowired
-    private UserService userService;
+    @GetMapping("/requestTypes")
+    public List<FormJsListValue> requestTypes() throws TaskListException, IOException {
 
-    @GetMapping("/users")
-    public List<FormJsListValue> users() throws TaskListException, IOException {
+        return List.of(new FormJsListValue("cardLost", "Card lost or stolen"),
+                new FormJsListValue("fraud", "Fraudulent movments"),
+                new FormJsListValue("dbtCollection", "Debt collection"),
+                new FormJsListValue("creditReport", "Credit report"),
+                new FormJsListValue("moneyTransfer", "Money transfer"));
 
-        List<User> users = userService.all();
-        List<FormJsListValue> result = new ArrayList<>();
-        for (User u : users) {
-            result.add(new FormJsListValue(u.getUsername(), u.getFirstname() + " " + u.getLastname()));
-        }
-        return result;
     }
 
     @GetMapping("/checklist")

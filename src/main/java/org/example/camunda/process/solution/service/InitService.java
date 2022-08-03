@@ -7,7 +7,6 @@ import java.nio.file.Path;
 
 import javax.annotation.PostConstruct;
 
-import org.example.camunda.process.solution.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,6 @@ public class InitService {
     
     @Autowired
     private MailTemplateService mailTemplateService;
-    
-    @Autowired
-    private UserService userService;
     
     public void createWorkspace() throws IOException {
         Path wsPath = Path.of(workspace).toAbsolutePath();
@@ -67,26 +63,11 @@ public class InitService {
         });
         MailBuilderUtils.configure(config);
     }
-    
-    public boolean checkEmpty() {
-        return userService.count() == 0;
-    }
-
-    private void initUsers() {
-        if (checkEmpty()) {
-            userService.create(new User("christophe", "pwd").setFirstname("Christophe").setLastname("Dame").setEmail("christophe.dame@camunda.com"));
-            userService.create(new User("falko", "pwd").setFirstname("Falko").setLastname("Menge").setEmail("falko.menge@camunda.com"));
-            userService.create(new User("marco", "pwd").setFirstname("Marco").setLastname("Dame").setEmail("marco.lopes@camunda.com"));
-            userService.create(new User("thomas", "pwd").setFirstname("Thomas").setLastname("Gütt").setEmail("thomas.gutt@camunda.com"));
-            userService.create(new User("fatma", "pwd").setFirstname("Fatma").setLastname("Cheour").setEmail("fatma.cheour@camunda.com"));
-        }
-    }
 
     @PostConstruct
     private void init() throws IOException {
         createWorkspace();
         initGoogle();
         initThymeleaf();
-        initUsers();
     }
 }
