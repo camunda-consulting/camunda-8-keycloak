@@ -8,7 +8,7 @@ Vue.component('mytasks',{
 	}
   },
   created: function () {
-    axios.get('/tasks/myOpenedTasks/'+this.$store.user.name, this.$store.axiosHeaders).then(response => {
+    axios.get('/tasks/myOpenedTasks/'+this.$store.user.name).then(response => {
 		this.$store.tasks = response.data; 
 	}).catch(error => {
 		alert(error.message); 

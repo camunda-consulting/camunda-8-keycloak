@@ -22,7 +22,7 @@ Vue.component('new-instance',{
 			  }
 			}
 			if (errors.length==0) {
-			    axios.post('/process/'+this.$store.process.bpmnProcessId+'/start', this.form._getState().data, this.$store.axiosHeaders).then(response => {
+			    axios.post('/process/'+this.$store.process.bpmnProcessId+'/start', this.form._getState().data).then(response => {
 					this.$store.state='instanceConfirmation';
 				}).catch(error => {
 					alert(error.message); 
@@ -36,7 +36,7 @@ Vue.component('new-instance',{
 		} else {
 			let url = '/forms/instanciation/'+this.$store.process.bpmnProcessId;
 
-		    axios.get(url, this.$store.axiosHeaders).then(response => {
+		    axios.get(url).then(response => {
 				let schema = response.data; 
 				if (this.form==null) {
 					this.form = new FormViewer.Form({

@@ -16,9 +16,9 @@ Vue.component('my-header',{ template: `<nav class="navbar bg-dark">
 					<button class="btn btn-sm btn-primary" @click="saveMailTemplate()">Save</button>
 				</div>
 			</div>
-		<div><span class="text-light"><b>{{$store.user.name}}</b> working on <b>{{$store.form.name}}</b></span> 
-			<a class="logout bi bi-box-arrow-left text-light" @click="logout()"></a></div>
-		</div>
+			<div>
+				<span class="text-light"><b>{{$store.user.name}}</b> working on <b>{{$store.form.name}}</b></span> 
+			</div>
 		</div>
 	</nav>`,
 	data() {
@@ -47,12 +47,6 @@ Vue.component('my-header',{ template: `<nav class="navbar bg-dark">
 		}).catch(error => {
 			alert(error.message); 
 		})
-	},
-	logout() {
-	  this.$store.user.name=null;
-	  this.$store.user.token=null;
-	  this.$store.auth=false;
-	  localStorage.removeItem('camundaUser');
 	}
   }
  });
@@ -67,14 +61,10 @@ Vue.component('admin-page',{
   <li class="nav-item" role="presentation">
     <button class="nav-link" id="mails-tab" data-bs-toggle="tab" data-bs-target="#mails" type="button" role="tab" aria-controls="mails" aria-selected="false">Mails</button>
   </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="false">Users</button>
-  </li>
 </ul>
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane fade show active" id="forms" role="tabpanel" aria-labelledby="forms-tab"><forms-list></forms-list></div>
   <div class="tab-pane fade" id="mails" role="tabpanel" aria-labelledby="mails-tab"><mails-list></mails-list></div>
-  <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">...</div>
 </div>
 	</div>`
 });

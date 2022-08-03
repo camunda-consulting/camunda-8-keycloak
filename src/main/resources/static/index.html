@@ -22,16 +22,12 @@
 </head>
 <body>
 <div id="app">
-	<main-page v-if="authenticated"></main-page>
-	<login v-else></login>
-	
+	<main-page></main-page>
 </div>
 </body>
 <script>
   Vue.prototype.$store = Vue.observable({
-	auth: false,
-	user: {'name':null, 'token':null, 'organizer': false},
-	axiosHeaders:{'headers': {}},
+	user: {'name':null},
 	state: 'mytasks',
 	tasks:[],
 	task: {
@@ -55,17 +51,11 @@
 		}
 	},
 	created: function() {
-		let storedUser = localStorage.getItem('camundaUser');
-		if (storedUser) {
-			
-			storedUser = JSON.parse(storedUser);
-			console.log(storedUser);
-			if (storedUser /*&& storedUser.token*/) {
-				this.$store.user = storedUser;
-				//this.$store.axiosHeaders.headers = {'Authorization': storedUser.token}
-				this.$store.auth=true;
-			}
-		}
+		axios.get('/authentication/me').then(response => {
+			this.$store.user.name=response.data.username;
+		}).catch(error => {
+			alert(error.message); 
+		})
 	}
   });
 </script>

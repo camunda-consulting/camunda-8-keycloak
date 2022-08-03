@@ -23,7 +23,6 @@
 	<link href="/assets/css/custom.css" rel="stylesheet">
 	<link href="/assets/css/login.css" rel="stylesheet">
 	<script src="/assets/js/axios-0.24.0.min.js"></script>
-	<script src="/components/login.js"></script>
 	<script src="/admin/components/form.js"></script>
 	<script src="/admin/components/mail.js"></script>
 	<script src="/admin/components/admin.js"></script>
@@ -31,18 +30,15 @@
 </head>
 <body>
 <div id="app">
-	<admin-page v-if="authenticated && $store.state=='welcome'"></admin-page>
-	<form-page v-if="authenticated && $store.state=='form'"></form-page>
-	<mail-page v-if="authenticated && $store.state=='mail'"></mail-page>
-	<login v-if="!authenticated"></login>
+	<admin-page v-if="$store.state=='welcome'"></admin-page>
+	<form-page v-if="$store.state=='form'"></form-page>
+	<mail-page v-if="$store.state=='mail'"></mail-page>
 	
 </div>
 </body>
 <script>
   Vue.prototype.$store = Vue.observable({
-	auth: false,
-	user: {'name':null, 'token':null, 'organizer': false},
-	axiosHeaders:{'headers': {}},
+	user: {'name':null},
 	state:'welcome',
 	formEditor: null,
 	defaultForm: {
@@ -82,17 +78,12 @@
 		}
 	},
 	created: function() {
-		let storedUser = localStorage.getItem('camundaUser');
-		if (storedUser) {
-			
-			storedUser = JSON.parse(storedUser);
-			console.log(storedUser);
-			if (storedUser /*&& storedUser.token*/) {
-				this.$store.user = storedUser;
-				//this.$store.axiosHeaders.headers = {'Authorization': storedUser.token}
-				this.$store.auth=true;
-			}
-		}
+		axios.get('/authentication/me').then(response => {
+			this.$store.user.name=response.data.username;
+		}).catch(error => {
+			alert(error.message); 
+		})
+		
 		this.$store.form.schema = this.$store.defaultForm;
 	}
   });

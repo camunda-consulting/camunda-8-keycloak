@@ -16,7 +16,7 @@ Vue.component('task-form',{
   },
   methods: {
     claim() {
-	  axios.get('/tasks/'+this.$store.task.id+'/claim/'+this.$store.user.name, this.$store.axiosHeaders).then(response => {
+	  axios.get('/tasks/'+this.$store.task.id+'/claim/'+this.$store.user.name).then(response => {
         this.$store.task.assignee=this.$store.user.name;
       }).catch(error => {
         alert(error.message);
@@ -24,7 +24,7 @@ Vue.component('task-form',{
       this.form.setProperty('readOnly', false);
     },
     unclaim() {
-	  axios.get('/tasks/'+this.$store.task.id+'/unclaim/', this.$store.axiosHeaders).then(response => {
+	  axios.get('/tasks/'+this.$store.task.id+'/unclaim/').then(response => {
         this.$store.task.assignee=null;
 	  }).catch(error => {
 	    alert(error.message); 
@@ -40,7 +40,7 @@ Vue.component('task-form',{
 	    }
 	  }
 	  if (errors.length==0) {
-	    axios.post('/tasks/'+this.$store.task.id, this.form._getState().data, this.$store.axiosHeaders).then(response => {
+	    axios.post('/tasks/'+this.$store.task.id, this.form._getState().data).then(response => {
           let i =0;
           for(;i<this.$store.tasks.length;i++) {
             if (this.$store.tasks[i].id==this.$store.task.id) {
@@ -68,7 +68,7 @@ Vue.component('task-form',{
         this.form = null;
       } else {
         let url = '/forms/'+this.$store.task.processDefinitionId+'/'+this.$store.task.formKey;
-        axios.get(url, this.$store.axiosHeaders).then(response => {
+        axios.get(url).then(response => {
           let schema = response.data; 
           if (this.form==null) {
             this.form = new FormViewer.Form({

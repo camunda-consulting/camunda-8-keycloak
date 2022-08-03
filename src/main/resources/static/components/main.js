@@ -2,18 +2,8 @@ Vue.component('my-header',{ template: `<nav class="navbar navbar-light">
 		<div class="container-fluid">
 			<img width="140" src="/assets/img/logo.svg" class="custom-logo" alt="Camunda">
 			<div><span class="text-primary">Hello {{$store.user.name}}</span>
-			<translate-menu></translate-menu>
-			<a class="logout bi bi-box-arrow-left" @click="logout()"></a></div>
 		</div>
-    </nav>`,
-  methods: {
-	  logout() {
-		this.$store.user.name=null;
-		this.$store.user.token=null;
-		this.$store.auth=false;
-		localStorage.removeItem('camundaUser');
-	  }
-  }
+    </nav>`
  });
 Vue.component('main-page',{
   template: `<div><my-header></my-header>
@@ -86,7 +76,7 @@ Vue.component('side-bar',{
 	  }
   },
   created: function () {
-    axios.get('/process/definition/latest', this.$store.axiosHeaders).then(response => {
+    axios.get('/process/definition/latest').then(response => {
 		this.processes = response.data; 
 	}).catch(error => {
 		alert(error.message); 

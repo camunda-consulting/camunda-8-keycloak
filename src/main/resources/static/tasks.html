@@ -21,16 +21,12 @@
 </head>
 <body>
 <div id="app">
-	<linkable-task v-if="authenticated"></linkable-task>
-	<login v-else></login>
-	
+	<linkable-task></linkable-task>
 </div>
 </body>
 <script>
   Vue.prototype.$store = Vue.observable({
-	auth: false,
-	user: {'name':null, 'token':null, 'organizer': false},
-	axiosHeaders:{'headers': {}},
+	user: {'name':null},
 	task: {
 		id: null,
 		name: null,
@@ -51,26 +47,19 @@
 	},
 	created: function() {
 		
-		let storedUser = localStorage.getItem('camundaUser');
-		if (storedUser) {
-			
-			storedUser = JSON.parse(storedUser);
-			console.log(storedUser);
-			if (storedUser /*&& storedUser.token*/) {
-				this.$store.user = storedUser;
-				//this.$store.axiosHeaders.headers = {'Authorization': storedUser.token}
-				this.$store.auth=true;
-			}
-	
+		axios.get('/authentication/me').then(response => {
+			this.$store.user.name=response.data.username;
 			const queryString = window.location.search;
 			const urlParams = new URLSearchParams(queryString);
 			const token = urlParams.get('token')
-		    axios.get('/tasks/token/'+token, this.$store.axiosHeaders).then(response => {
+		    axios.get('/tasks/token/'+token).then(response => {
 				this.$store.task = response.data; 
 			}).catch(error => {
 				alert(error.message); 
 			})
-		}
+		}).catch(error => {
+			alert(error.message); 
+		})
 	}
   });
 </script>
