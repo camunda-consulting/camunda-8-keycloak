@@ -1,11 +1,10 @@
 package org.example.camunda.process.solution;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.process.test.api.ZeebeTestEngine;
 import io.camunda.zeebe.spring.test.ZeebeSpringTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @see
@@ -19,7 +18,7 @@ public class ProcessUnitTest {
 
   @Autowired private ZeebeTestEngine engine;
 
-  //@MockBean private MyService myService;
+  // @MockBean private MyService myService;
 
   /*
   @Test

@@ -2,6 +2,7 @@ Vue.component('my-header',{ template: `<nav class="navbar navbar-light">
 		<div class="container-fluid">
 			<img width="140" src="/assets/img/logo.svg" class="custom-logo" alt="Camunda">
 			<div><span class="text-primary">Hello {{$store.user.name}}</span>
+			<translate-menu></translate-menu>
 		</div>
     </nav>`
  });

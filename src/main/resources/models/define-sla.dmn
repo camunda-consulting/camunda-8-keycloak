@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_30d48a0c-bd07-4fc0-b9ab-20127603ef6e" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" camunda:diagramRelationId="30f9334e-9ff9-433e-8147-8a3825d70b00" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.0.0">
+  <decision id="defineSLA" name="Define SLA">
+    <decisionTable id="DecisionTable_0azx1hv">
+      <input id="Input_1" label="Request Type">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>requestType</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="SLA" name="sla" typeRef="string"/>
+      <rule id="DecisionRule_0u7bd1x">
+        <inputEntry id="UnaryTests_09kpsij">
+          <text>"cardLost"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1srmncd">
+          <text>"PT12H"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_15b9xit">
+        <inputEntry id="UnaryTests_1fgebwf">
+          <text>"fraud"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0o2kiwy">
+          <text>"PT12H"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_06jen1q">
+        <inputEntry id="UnaryTests_1bl2t24">
+          <text>"dbtCollection"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02j4v00">
+          <text>"P2D"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1d359ln">
+        <inputEntry id="UnaryTests_0crorph">
+          <text>"creditReport"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_04pguxj">
+          <text>"P30D"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_123jpxy">
+        <inputEntry id="UnaryTests_1j9fnth">
+          <text>"moneyTransfer"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_14f5k7c">
+          <text>"P2D"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="defineSLA">
+        <dc:Bounds height="80" width="180" x="160" y="100"/>
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

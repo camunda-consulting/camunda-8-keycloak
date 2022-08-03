@@ -8,5 +8,5 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("hasRole('Admin')")
-public @interface IsAdmin {}
+@PreAuthorize("hasRole('Tasklist')")
+public @interface HasTasklist {}

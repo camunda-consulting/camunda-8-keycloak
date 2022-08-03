@@ -2,12 +2,11 @@ package org.example.camunda.process.solution.facade;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.example.camunda.process.solution.exception.TechnicalException;
 import org.example.camunda.process.solution.exception.UnauthorizedException;
+import org.example.camunda.process.solution.facade.dto.AuthUser;
 import org.keycloak.KeycloakSecurityContext;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 public abstract class AbstractController {
-    
-  @Autowired
-  private HttpServletRequest request;
+
+  @Autowired private HttpServletRequest request;
 
   public abstract Logger getLogger();
 
@@ -78,13 +76,17 @@ public abstract class AbstractController {
     return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
         .getResponse();
   }
-  
-  protected String getAuthenticatedUser() {
-      //(KeycloakPrincipal) request.getUserPrincipal();
-      return getKeycloakSecurityContext().getIdToken().getGivenName();
+
+  protected AuthUser getAuthenticatedUser() {
+    // (KeycloakPrincipal) request.getUserPrincipal();
+    AuthUser user = new AuthUser();
+    user.setUsername(getKeycloakSecurityContext().getIdToken().getGivenName());
+    user.setEmail(getKeycloakSecurityContext().getIdToken().getEmail());
+
+    return user;
   }
 
   private KeycloakSecurityContext getKeycloakSecurityContext() {
-      return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+    return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
   }
 }

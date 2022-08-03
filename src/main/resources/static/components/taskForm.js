@@ -1,6 +1,6 @@
 
 Vue.component('task-form',{
-  template: `<div class="card taskform" v-if="$store.task.id">
+  template: `<div v-if="$store.task.id"><div class="card taskform">
     <h5 class="card-title">{{$store.task.name}}</h5>
 	<div id="task-form"></div>
 	<div class="ms-2 me-2 mb-2 d-flex justify-content-between">
@@ -8,15 +8,21 @@ Vue.component('task-form',{
 	  <button v-if="!$store.task.assignee" type="button" class="btn btn-primary" @click="claim()">{{ $t("message.claim") }}</button>
 	  <button :disabled="!$store.task.assignee || $store.task.assignee!=$store.user.name" type="button" class="btn btn-primary" @click="submit()">{{ $t("message.submit") }}</button>
 	</div>
-  </div>`,
+	<adhoc-task-modal></adhoc-task-modal>
+	
+	</div><button v-if="this.$store.task.name=='Answer customer'" type="button" class="btn btn-primary" @click="adhocTask()">Adhoc task</button></div>`,
   data() {
     return {
 	  form: null
 	}
   },
   methods: {
+    adhocTask() {
+	  let modal = new bootstrap.Modal(document.getElementById('adhoc-task-modal'), {});
+	  modal.show();
+	},
     claim() {
-	  axios.get('/tasks/'+this.$store.task.id+'/claim/'+this.$store.user.name).then(response => {
+	  axios.get('/tasks/'+this.$store.task.id+'/claim').then(response => {
         this.$store.task.assignee=this.$store.user.name;
       }).catch(error => {
         alert(error.message);
@@ -93,4 +99,54 @@ Vue.component('task-form',{
   }
 });
 
+
+Vue.component('adhoc-task-modal',{
+  template: `<div class="modal fade" id="adhoc-task-modal" ref="adhoc-task-modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-secondary text-light">
+        <h5 class="modal-title">Add an adhoc task</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+		  <span class="input-group-text">Action</span>
+		  <select class="form-control" id="actionType" v-model="data.lastAdhocTaskType">
+		    <option value="requestDocument">Request a document</option>
+		    <option value="cancelCard">Cancel card</option>
+		    <option value="revertMovment">Revert movement</option>
+		  </select>
+		</div>
+        <div class="input-group mb-3" v-if="data.lastAdhocTaskType=='requestDocument'">
+		  <span class="input-group-text">Document type</span>
+		  <input type="text" class="form-control" placeholder="Document type" v-model="data.documentType">
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" @click="addAction" data-bs-dismiss="modal">Add action</button>
+        <button class="btn btn-link" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>`,
+  data() {
+    return {
+		data: {
+		  lastAdhocTaskType:"requestDocument",
+		  documentType:"ID card"
+		}
+	}
+  },
+  methods: {
+	  addAction() {
+		this.data.initiator = this.$store.task.variables.initiator;
+		
+		axios.post('/tasks/adhoc', this.data).then(response => {
+			console.log(response.data); 	
+		}).catch(error => {
+			console.log(error.message); 
+		})
+	  }
+  }
+});
 	

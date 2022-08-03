@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.example.camunda.process.solution.facade.dto.AuthUser;
 import org.example.camunda.process.solution.service.OperateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/process")
-public class ProcessController {
+public class ProcessController extends AbstractController {
 
   private static final Logger LOG = LoggerFactory.getLogger(ProcessController.class);
 
@@ -35,6 +36,9 @@ public class ProcessController {
 
     LOG.info("Starting process `" + bpmnProcessId + "` with variables: " + variables);
 
+    AuthUser user = getAuthenticatedUser();
+    variables.put("initiator", user.getUsername());
+    variables.put("initiatorEmail", user.getEmail());
     zeebe
         .newCreateInstanceCommand()
         .bpmnProcessId(bpmnProcessId)
@@ -48,14 +52,19 @@ public class ProcessController {
     Set<String> present = new HashSet<>();
     List<ProcessDefinition> result = new ArrayList<>();
     List<ProcessDefinition> processDefs = operateService.getProcessDefinitions();
-    if (processDefs!=null) {
-        for (ProcessDefinition def : processDefs) {
-          if (!present.contains(def.getBpmnProcessId())) {
-            result.add(def);
-            present.add(def.getBpmnProcessId());
-          }
+    if (processDefs != null) {
+      for (ProcessDefinition def : processDefs) {
+        if (!present.contains(def.getBpmnProcessId())) {
+          result.add(def);
+          present.add(def.getBpmnProcessId());
         }
+      }
     }
     return result;
+  }
+
+  @Override
+  public Logger getLogger() {
+    return LOG;
   }
 }

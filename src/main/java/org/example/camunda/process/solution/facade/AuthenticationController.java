@@ -15,9 +15,7 @@ public class AuthenticationController extends AbstractController {
 
   @GetMapping("/me")
   public AuthUser getConnectedUser() {
-    AuthUser loggedUser = new AuthUser();
-    loggedUser.setUsername(getAuthenticatedUser());
-    return loggedUser;
+    return getAuthenticatedUser();
   }
 
   @Override
