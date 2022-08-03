@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.util.List;
 
 import org.example.camunda.process.solution.facade.dto.MailTemplate;
+import org.example.camunda.process.solution.security.IsAdmin;
 import org.example.camunda.process.solution.service.MailTemplateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,12 +33,14 @@ public class MailEditionController extends AbstractController {
 
   @Autowired private MailTemplateService mailTemplateService;
 
+  @IsAdmin
   @PostMapping
   public ResponseEntity<MailTemplate> save(@RequestBody MailTemplate mailTemplate) throws IOException {
-      mailTemplateService.saveMail(mailTemplate);
+    mailTemplateService.saveMail(mailTemplate);
     return new ResponseEntity<>(mailTemplate, HttpStatus.CREATED);
   }
 
+  @IsAdmin
   @GetMapping("/{templateName}")
   @ResponseBody
   public MailTemplate getMailTemplate(@PathVariable String templateName)
@@ -44,6 +48,7 @@ public class MailEditionController extends AbstractController {
     return mailTemplateService.findByName(templateName);
   }
   
+  @IsAdmin
   @DeleteMapping("/{templateName}")
   public void deleteForm(@PathVariable String templateName)
       throws TaskListException, IOException {
@@ -51,6 +56,7 @@ public class MailEditionController extends AbstractController {
   }
   
   
+  @IsAdmin
   @GetMapping(value = "/names")
   @ResponseBody
   public List<String> formNames() {

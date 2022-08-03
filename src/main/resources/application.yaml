@@ -16,6 +16,13 @@ operateUrl: http://localhost:8081/
 
 baseUrl: http://localhost:8080
 
+keycloak.auth-server-url: http://localhost:18080/auth
+keycloak.realm: camunda-platform
+keycloak.resource: SpringBootClient
+keycloak.public-client: true
+        
+keycloak.principal-attribute: preferred_username
+
 spring:
   datasource:
     url: jdbc:h2:file:./h2/db

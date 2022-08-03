@@ -2,11 +2,15 @@ package org.example.camunda.process.solution.facade;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.example.camunda.process.solution.exception.TechnicalException;
 import org.example.camunda.process.solution.exception.UnauthorizedException;
+import org.keycloak.KeycloakSecurityContext;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestHeaderException;
@@ -15,6 +19,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 public abstract class AbstractController {
+    
+  @Autowired
+  private HttpServletRequest request;
 
   public abstract Logger getLogger();
 
@@ -70,5 +77,14 @@ public abstract class AbstractController {
   protected HttpServletResponse getHttpServletResponse() {
     return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
         .getResponse();
+  }
+  
+  protected String getAuthenticatedUser() {
+      //(KeycloakPrincipal) request.getUserPrincipal();
+      return getKeycloakSecurityContext().getIdToken().getGivenName();
+  }
+
+  private KeycloakSecurityContext getKeycloakSecurityContext() {
+      return (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
   }
 }

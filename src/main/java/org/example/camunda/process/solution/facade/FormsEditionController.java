@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.example.camunda.process.solution.facade.dto.Form;
+import org.example.camunda.process.solution.security.IsAdmin;
 import org.example.camunda.process.solution.service.FormService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +32,14 @@ public class FormsEditionController extends AbstractController {
 
   @Autowired private FormService formService;
 
+  @IsAdmin
   @PostMapping
   public ResponseEntity<Form> save(@RequestBody Form form) throws IOException {
       formService.saveForm(form);
     return new ResponseEntity<>(form, HttpStatus.CREATED);
   }
 
+  @IsAdmin
   @GetMapping("/{formKey}")
   @ResponseBody
   public Form getForm(@PathVariable String formKey)
@@ -44,6 +47,7 @@ public class FormsEditionController extends AbstractController {
     return formService.findByName(formKey);
   }
   
+  @IsAdmin
   @DeleteMapping("/{formKey}")
   public void deleteForm(@PathVariable String formKey)
       throws TaskListException, IOException {
@@ -51,9 +55,10 @@ public class FormsEditionController extends AbstractController {
   }
   
   
+  @IsAdmin
   @GetMapping(value = "/names")
-  @ResponseBody
   public List<String> formNames() {
+      getAuthenticatedUser();
     return formService.findNames();
   }
 
