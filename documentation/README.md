@@ -11,7 +11,7 @@ If you don't have a Camunda 8 platform, you can use the Camunda provided docker-
 
 * Then you'll need to federate the Directory users in your Keycloak (follow the WorkshopSupport.docx documentation)
 
-* To have some "Admin" users allowed to access **http://localhost:8080/admin/index.html**, you'll need to configure them manually in Keycloak. To do so, connect to Keycloak as an Admin 
+* To have some "Admin" users allowed to access **http://localhost:8080/admin.html**, you'll need to configure them manually in Keycloak. To do so, connect to Keycloak as an Admin 
 localhost:18080 (admin:admin)
 Navigate to Roles and create an "Admin" role.
 Navigate to Users and assign the "Admin" role to someone (for example "Demo").
