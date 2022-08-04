@@ -53,10 +53,8 @@ public class WebSecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     super.configure(http);
     http.authorizeRequests()
-        .antMatchers("/admin/*")
-        .hasRole("Admin")
-        .anyRequest()
-        .authenticated()
+        .antMatchers("/admin.html").hasRole("Admin")
+        .antMatchers("/tasklist.html","/direct-task.html").authenticated()
         .and()
         .csrf()
         .disable();

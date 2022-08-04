@@ -3,8 +3,10 @@ Vue.component('my-header',{ template: `<nav class="navbar navbar-light">
 			<img width="140" src="/assets/img/logo.svg" class="custom-logo" alt="Camunda">
 			<div><span class="text-primary">Hello {{$store.user.name}}</span>
 			<translate-menu></translate-menu>
+			<a class="logout bi bi-box-arrow-left" href="/sso/logout"></a></div>
 		</div>
     </nav>`
+    
  });
 Vue.component('main-page',{
   template: `<div><my-header></my-header>

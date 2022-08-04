@@ -17,7 +17,9 @@ Vue.component('my-header',{ template: `<nav class="navbar bg-dark">
 				</div>
 			</div>
 			<div>
-				<span class="text-light"><b>{{$store.user.name}}</b> working on <b>{{$store.form.name}}</b></span> 
+				<span class="text-light"><b>{{$store.user.name}}</b> working on <b>{{$store.form.name}}</b></span>
+				
+				<a class="logout bi bi-box-arrow-left" href="/sso/logout"></a></div>
 			</div>
 		</div>
 	</nav>`,
