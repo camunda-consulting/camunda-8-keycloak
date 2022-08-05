@@ -10,7 +10,7 @@ Vue.component('task-form',{
 	</div>
 	<adhoc-task-modal></adhoc-task-modal>
 	
-	</div><button v-if="this.$store.task.name=='Answer customer'" type="button" class="btn btn-primary" @click="adhocTask()">Adhoc task</button></div>`,
+	</div><button v-if="this.$store.task.name=='Answer to the customer'" type="button" class="btn btn-primary" @click="adhocTask()">Adhoc task</button></div>`,
   data() {
     return {
 	  form: null
